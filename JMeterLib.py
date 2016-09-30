@@ -14,10 +14,10 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-This library provides simple way to integrate Robot Framework and JMeter. JTL output
+This library provides simple way to integrate Robot Framework and JMeter (forked from http://sourceforge.net/projects/rf-jmeter-py/). JTL output
 files can be analysed and converted to HTML, Python dictionary or SQLite format.
 
-Version 1.1 released on 25st of September 2015.
+Version 1.2 released on 30st of September 2016.
 
 What's new:
 
@@ -27,12 +27,12 @@ What's new:
 Following software versions were used during development:
 - robotframework-2.8.7
 - robotframework-ride-2.7.5
-- JMeter 2.12
+- JMeter 3.0
 - python-2.7.5
 
-Author: Marcin Kowalczyk
+Author: Marcin Kowalczyk, Vadym Vikulin
 
-Website: http://sourceforge.net/projects/rf-jmeter-py/
+Website: https://github.com/vikulin/robotframework-jmeterlibrary
 
 Installation:
 - run command: pip install robotframework-jmeterlibrary
@@ -49,7 +49,7 @@ Example for running JMeter and parsing results in single keyword:
 
 Example for running JMeter and parsing results in separate keyword:
 | ${logPath}= | set variable | D:/Tests/output1.jtl |  |
-| run jmeter | D:/apache-jmeter-2.12/bin/jmeter.bat | D:/Tests/Test1Thread1Loop.jmx | ${logPath} |
+| run jmeter | D:/apache-jmeter-3.0/bin/jmeter.bat | D:/Tests/Test1Thread1Loop.jmx | ${logPath} |
 | analyse jtl convert | ${logPath} |  |  |
 
 Example for reading parsed contents:
@@ -312,7 +312,7 @@ class LogAnalysisInitiator(object):
                 logFileFormat = "xml"
         if logLength > 0 and logFileFormat != "xml":
             #if re.search("\d+,\d+,[^,]+,\d+,\w+,[^,]+,\w+,\w+,\d+,\d+", fileLines[0]):
-            if re.search("\d+,\d+,.*", fileLines[0]):
+            if re.search("\d+,\d+,.*", fileLines[1]):
                 logFileFormat = "csv"
         return logFileFormat
 
@@ -457,6 +457,24 @@ class LogAnalyser(object):
         self.ls = LogConverterSql(self, dbname, dbReady)
         self.ls.createSql()
 
+"""
+timeStamp - 0,
+elapsed - 1,
+label - 2,
+responseCode - 3,
+responseMessage - 4,
+threadName - 5,
+dataType - 6,
+success - 7,
+failureMessage - 8,
+bytes - 9,
+grpThreads - 10,
+allThreads - 11,
+Latency - 12,
+IdleTime - 13
+1475231801267,164,show /rest/event,202,Accepted,Thread Group 1-9,text,true,103,72,72,162
+1475230627774,142,show /rest/event,202,Accepted,Thread Group 1-2,text,true,,103,21,21,142,0
+"""
 class CsvLogAnalyser(LogAnalyser):
     def getSamples(self):
         print "Extracting samples and assertions from " + self.filePath
@@ -474,6 +492,10 @@ class CsvLogAnalyser(LogAnalyser):
                         newSample = Sample2(ts=row[0], t=row[1], lb=row[2], rc=row[3],
                                            rm=row[4], tn=row[5], dt=row[6], s=row[7],
                                            by=row[8], lt=row[9], ng=row[10], na=row[11])
+                    elif len(row) == 13 and self.validateCsvSampleAttributes(row):
+                        newSample = Sample2(ts=row[0], t=row[1], lb=row[2], rc=row[3],
+                                           rm=row[4], tn=row[5], dt=row[6], s=row[7],
+                                           by=row[9], lt=row[12], ng=row[10], na=row[11])
                     if type(newSample) == Sample or type(newSample) == Sample2:
                         self.samples.append(newSample)
         except IOError:
