@@ -492,7 +492,7 @@ class CsvLogAnalyser(LogAnalyser):
                         newSample = Sample2(ts=row[0], t=row[1], lb=row[2], rc=row[3],
                                            rm=row[4], tn=row[5], dt=row[6], s=row[7],
                                            by=row[8], lt=row[9], ng=row[10], na=row[11])
-                    elif len(row) == 13 and self.validateCsvSampleAttributes(row):
+                    elif len(row) == 14 and self.validateCsvSampleAttributes(row):
                         newSample = Sample2(ts=row[0], t=row[1], lb=row[2], rc=row[3],
                                            rm=row[4], tn=row[5], dt=row[6], s=row[7],
                                            by=row[9], lt=row[12], ng=row[10], na=row[11])
