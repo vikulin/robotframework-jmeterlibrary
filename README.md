@@ -13,9 +13,10 @@ GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Version 1.1 released on 25st of September 2015.
+Version 1.2 released on 30st of September 2016.
 
 What's new:
+    1.2 - Added JMeter 3.0 support
 
     Implementation of change request http://sourceforge.net/p/rf-jmeter-py/tickets/2/:
     " As a End User I want to have option to create smaller reports"
@@ -23,12 +24,12 @@ What's new:
 Following software versions were used during development:
 - robotframework-2.8.7
 - robotframework-ride-2.7.5
-- JMeter 2.12
+- JMeter 3.0
 - python-2.7.5
 
-Author: Marcin Kowalczyk
+Author: Vadym Vikulin
 
-Website: http://sourceforge.net/projects/rf-jmeter-py/
+Website: https://github.com/vikulin/robotframework-jmeterlibrary
 
 Installation:
 - run command: pip install robotframework-jmeterlibrary
@@ -45,7 +46,7 @@ Example for running JMeter and parsing results in single keyword:
 
 Example for running JMeter and parsing results in separate keyword:
 | ${logPath}= | set variable | D:/Tests/output1.jtl |  |
-| run jmeter | D:/apache-jmeter-2.12/bin/jmeter.bat | D:/Tests/Test1Thread1Loop.jmx | ${logPath} |
+| run jmeter | D:/apache-jmeter-3.0/bin/jmeter.bat | D:/Tests/Test1Thread1Loop.jmx | ${logPath} |
 | analyse jtl convert | ${logPath} |  |  |
 
 Example for reading parsed contents:
