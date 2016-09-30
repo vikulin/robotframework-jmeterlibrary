@@ -13,7 +13,7 @@ GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Version 1.2 released on 30st of September 2016.
+Version 1.2 released on 30st of September 2016. Forked from http://sourceforge.net/p/rf-jmeter-py .
 
 What's new:
     1.2 - Added JMeter 3.0 support
